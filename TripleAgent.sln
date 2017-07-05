@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripleAgent", "TripleAgent.csproj", "{A8FAF6E6-BB5F-42B2-9E47-E50C7FD535FD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripleAgent", "TripleAgent\TripleAgent.csproj", "{A8FAF6E6-BB5F-42B2-9E47-E50C7FD535FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteLibrary", "SpriteLibrary\SpriteLibrary.csproj", "{FC04405B-2BC1-42CA-8410-A30F9BAF4B6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripleAgentDemo", "TripleAgentDemo\TripleAgentDemo.csproj", "{DCA60CC1-BE67-47B8-801B-5B1A994B9924}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{A8FAF6E6-BB5F-42B2-9E47-E50C7FD535FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8FAF6E6-BB5F-42B2-9E47-E50C7FD535FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8FAF6E6-BB5F-42B2-9E47-E50C7FD535FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC04405B-2BC1-42CA-8410-A30F9BAF4B6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC04405B-2BC1-42CA-8410-A30F9BAF4B6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC04405B-2BC1-42CA-8410-A30F9BAF4B6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC04405B-2BC1-42CA-8410-A30F9BAF4B6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCA60CC1-BE67-47B8-801B-5B1A994B9924}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCA60CC1-BE67-47B8-801B-5B1A994B9924}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCA60CC1-BE67-47B8-801B-5B1A994B9924}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCA60CC1-BE67-47B8-801B-5B1A994B9924}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

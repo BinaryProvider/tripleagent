@@ -1,0 +1,551 @@
+<HTML>
+<h2>Properties</h2>
+<p><b>Sprite.AnimationCount</b><br>
+<b>Summary:</b> The number of animations this sprite has<br>
+<p><b>Sprite.AnimationDone</b><br>
+<b>Summary:</b> Report whether or not the animation has been completed.  When you tell a Sprite to AnimateOnce,
+            this will report "false" until the animation sequence has been finished.  At that time, the value
+            will be "True."  The tricky bit is that this is a boolean.  If you have not told a sprite to
+            animate once, it will always return "false."  If a sprite is paused, this returns "false."  The only
+            time this returns "true" is when you tell a sprite to animate once, or animate a few times, and those
+            times have completed.  At that time, this will report "True".  If you have a sprite with only one frame,
+            it may not look like it is "animating", but it is.  It is simply animating that one frame over and over.
+            So, AnimationDone reports false, unless you have told it to animate_once.<br>
+<p><b>Sprite.AnimationIndex</b><br>
+<b>Summary:</b> Get or set the animation nimber.  It is best to change the animation using ChangeAnimation.
+            It is safer.<br>
+<p><b>Sprite.AutomaticallyMoves</b><br>
+<b>Summary:</b> Determine if the sprite automatically moves (you need to give it a direction [using one of the
+            SetSpriteDirection functions] and speed [MovementSpeed = X] also)<br>
+<p><b>Sprite.BaseImageLocation</b><br>
+<b>Summary:</b> The sprite location as found on the base image.  This is usually the easiest location to use.<br>
+<p><b>Sprite.Destroying</b><br>
+<b>Summary:</b> If the Sprite is in the middle of being Destroyed, this is set to true.  When a Sprite is
+            Destroyed, it needs to erase itself and do some house-cleaning before it actually vanishes.
+            During this time, you may not want to use it.  It is always a good thing to verify a Sprite
+            is not in the middle of being destroyed before you do something important with it.  To Destroy
+            a Sprite, use the Sprite.Destroy() function.<br>
+<p><b>Sprite.FrameIndex</b><br>
+<b>Summary:</b> This is the frame of the current animation sequence.<br>
+<p><b>Sprite.GetSize</b><br>
+<b>Summary:</b> Return the size of the sprite in reference to the image on which it is drawn.  To get the
+            size of the Sprite in relation to the PictureBox, use GetVisibleSize<br>
+<p><b>Sprite.GetVisibleSize</b><br>
+<b>Summary:</b> Return the relative size of the Sprite in relation to the PictureBox.  If the box has been 
+            stretched or shrunk, that affects the visible size of the sprite.<br>
+<p><b>Sprite.HasBeenDrawn</b><br>
+<b>Summary:</b> Report whether or not this Sprite has been drawn.  If it has, then it needs to be erased at
+            some point in time.<br>
+<p><b>Sprite.ID</b><br>
+<b>Summary:</b> The Sprite ID as specified by the sprite controller.<br>
+<p><b>Sprite.MovingToPoint</b><br>
+<b>Summary:</b> Tells us if we are in the process of doing a MoveTo operation.  This boolean should be the 
+            opposite of SpriteReachedEndpoint, but that boolean is poorly named.  This is usually the easier
+            one to use.<br>
+<p><b>Sprite.Opacity</b><br>
+<b>Summary:</b> Set the opacity of the sprite.  The value should be between 0 and 1.  1 is solid, 0 is transparent.<br>
+<p><b>Sprite.PictureBoxLocation</b><br>
+<b>Summary:</b> The sprite location as found on the picture-box that this sprite is associated with.  Used when dealing with mouse-clicks<br>
+<p><b>Sprite.Rotation</b><br>
+<b>Summary:</b> Change the rotation of the sprite, using degrees.  0 degrees is to the right.  90 is up.  
+            180 left, 270 down.  But, if your sprite was drawn facing up, then rotating it 90 degrees
+            will have it pointing left.  The angle goes counter-clockwise.  The image will be scaled
+            such that it continues to fit within the rectangle that it was originally in.  This results
+            in a little bit of shrinking at times, but you should rarely notice that.<br>
+<p><b>Sprite.SpriteName</b><br>
+<b>Summary:</b> The name of the sprite.  Use SetSpriteName(Name) to change this name.  Most Named sprites
+            are used to define what a sprite is.  Once you have created a named sprite, you usually use
+            SpriteController.DuplicateSprite(Name) to clone the sprite for use.<br>
+<p><b>Sprite.SpriteOriginName</b><br>
+<b>Summary:</b> Return the name of the sprite that this was duplicated from.  A duplicated sprite will have
+            no name, but will have a SpriteOriginName.<br>
+<p><b>Sprite.SpriteReachedEndPoint</b><br>
+<b>Summary:</b> This is true unless we are using MoveTo(point) or MoveTo(list of points) to tell the sprite to move
+            from one place to the next.  This boolean tells us if it has finished or not.<br>
+<p><b>Sprite.VisibleHeight</b><br>
+<b>Summary:</b> The visible Height as seen in the PictureBox.  It may be stretched, or shrunk from the actual
+            image size.<br>
+<p><b>Sprite.VisibleWidth</b><br>
+<b>Summary:</b> The visible width as seen in the PictureBox.  The Sprite may be stretched or shrunk from the
+            actual image size.<br>
+<p><b>Sprite.Zvalue</b><br>
+<b>Summary:</b> A number from 0 to 100.  Default = 50. Higher numbers print on top of lower numbers.  If you want a sprite to 
+            always be drawn on top of other sprites, give it a number higher than 50.  If you want a sprite to go under 
+            other sprites, make its number lower than 50.<br>
+<p><b>SpriteController.BackgroundImage</b><br>
+<b>Summary:</b> The Background Image on which the sprites are drawn.  This image ends up having
+            sprite parts on it. The OriginalImage is the version that is clean.  Use
+            ReplaceOriginalImage to replace the background Image.<br>
+<p><b>SpriteController.OriginalImage</b><br>
+<b>Summary:</b> The Image from which the background is taken when we erase sprites.  The BackgroundImage
+            is the image that contains images of the sprites as well as the background image.  Use
+            ReplaceOriginalImage to replace this and the BackgroundImage.<br>
+<p><b>SpriteController.SpriteCount</b><br>
+<b>Summary:</b> The count of all the sprites the controller knows about.  This includes named 
+            sprites, which may not be visible<br>
+<h2>Methods</h2>
+<p><b>Constructor: Animation.(SpriteLibrary.SmartImage,System.Drawing.Image,System.Int32,System.Int32,System.Int32)</b><br>
+<b>Summary:</b> Create an image from an image that has a bunch of frames in the one image.
+            Start at (0,0) with the specified height and width.  Pull out as many images as we can<br>
+<p><b>Constructor: Animation.(System.Drawing.Point,SpriteLibrary.SmartImage,System.Drawing.Image,System.Int32,System.Int32,System.Int32,System.Int32)</b><br>
+<b>Summary:</b> Create an image from an image that has a bunch of frames in the one image.
+            Start at the specified position (Start), and grab Count items (if we can find them)<br>
+<p><b>Constructor: SmartImage.(SpriteLibrary.SpriteController,System.Drawing.Image,System.Int32,System.Int32,System.Int32)</b><br>
+<b>Summary:</b> Make an animated image from an image that contains multiple frames<br>
+<p><b>SmartImage.AnimationDone(System.Int32,System.Int32,System.Boolean)</b><br>
+<b>Summary:</b> Check to see if the animation is in the last frame.  Only works if animateonce is set to true<br>
+<p><b>SmartImage.AnimationFrameCount(System.Int32)</b><br>
+<b>Summary:</b> Return the number of frames that the specified animation has.<br>
+<p><b>SmartImage.NeedsNewImage(System.Int32,System.Int32,System.TimeSpan)</b><br>
+<b>Summary:</b> Return true if the specified animation and frame for that animation needs
+            to be changed due to the time passing.<br>
+<p><b>Constructor: Sprite.(SpriteLibrary.Sprite,System.Boolean)</b><br>
+<b>Summary:</b> Create a Sprite that is based off of the specified sprite.  Clone the Sprite except that
+            we set SpriteName = "" and OrigSpriteName = the OldSprite.SpriteName.  That way we know that
+            the sprite was duplicated from the original, and we can still distinguish the original from
+            the duplicate.<br>
+<p><b>Constructor: Sprite.(SpriteLibrary.SpriteController,System.Drawing.Image,System.Int32,System.Int32)</b><br>
+<b>Summary:</b> Generate a new sprite.  It takes the image and the width and height.  If there are multiple images of that width and height in the image, an animation is created.<br>
+<p><b>Constructor: Sprite.(SpriteLibrary.SpriteController,System.Drawing.Image,System.Int32,System.Int32,System.Int32)</b><br>
+<b>Summary:</b> Generate a new sprite.  It takes a width, height, and the duration in Milliseconds for each frame<br>
+<p><b>Constructor: Sprite.(System.Drawing.Point,SpriteLibrary.SpriteController,System.Drawing.Image,System.Int32,System.Int32,System.Int32,System.Int32)</b><br>
+<b>Summary:</b> Create a Sprite from an animation image, specifying the number of consecutive 
+            frames to grab.<br>
+<p><b>Sprite.ActuallyDraw</b><br>
+<b>Summary:</b> Actually draw the Sprite.  Never use this.  It is used by the SpriteController<br>
+<p><b>Sprite.AddAnimation(System.Drawing.Image,System.Int32,System.Int32)</b><br>
+<b>Summary:</b> Add another animation to an existing Sprite.  After you add animations, you can use
+            ChangeAnimation to select which animation you want the specified sprite to show.
+            For example, you may want to have Animation 0 be a guy walking left, and animation 1 is
+            that same guy walking right.  Because we do not specify the number of frames, it starts
+            at the top-left corner and grabs as many frames as it can from the image.<br>
+<p><b>Sprite.AddAnimation(System.Drawing.Image,System.Int32,System.Int32,System.Int32)</b><br>
+<b>Summary:</b> Add another animation to an existing Sprite.  After you add animations, you can use
+            ChangeAnimation to select which animation you want the specified sprite to show.
+            For example, you may want to have Animation 0 be a guy walking left, and animation 1 is
+            that same guy walking right. Because we do not specify the number of frames, it starts
+            at the top-left corner and grabs as many frames as it can from the image.<br>
+<p><b>Sprite.AddAnimation(System.Drawing.Point,System.Drawing.Image,System.Int32,System.Int32,System.Int32,System.Int32)</b><br>
+<b>Summary:</b> Add another animation to an existing Sprite.  After you add animations, you can use
+            ChangeAnimation to select which animation you want the specified sprite to show.
+            For example, you may want to have Animation 0 be a guy walking left, and animation 1 is
+            that same guy walking right. Because we do not specify the number of frames, it starts
+            at the top-left corner and grabs as many frames as it can from the image.<br>
+<p><b>Sprite.AddAnimation(System.Int32,System.Boolean,System.Boolean)</b><br>
+<b>Summary:</b> Duplicate an animation, except rotated by the specified number of degrees.  For example, if you have
+            a single animation (0), and you want to rotate it by 90 degrees, it will create animation 1 with that
+            rotation to it.  In the long haul, generating a few rotated animations is less memory intensive than
+            rotating it on demand.<br>
+<p><b>Sprite.AddAnimation(System.Int32,System.Int32)</b><br>
+<b>Summary:</b> Duplicate an animation, except rotated by the specified number of degrees.  For example, if you have
+            a single animation (0), and you want to rotate it by 90 degrees, it will create animation 1 with that
+            rotation to it.  In the long haul, generating a few rotated animations is less memory intensive than
+            rotating it on demand.<br>
+<p><b>Sprite.AnimateJustAFewTimes(System.Int32,System.Int32)</b><br>
+<b>Summary:</b> Start a new animation.  It will complete the animation the number of times you specify.
+            For example, if your sprite is walking, and one animation is one step, specifying 4 here
+            will result in your sprite taking 4 steps and then the animation stops.  You will want
+            to make sure you are checking for when the animation stops, using the SpriteAnimationComplete event,
+            checking the Sprite.AnimationDone flag.<br>
+<p><b>Sprite.AnimateOnce(System.Int32)</b><br>
+<b>Summary:</b> Start a new animation, but do it just once.  You can use AnimateJustAFewTimes(1) to the same effect.
+            Or, you can use AnimateJustAFewTimes with a different number.  The SpriteAnimationComplete event will
+            fire off when the animation completes.  The variable, Sprite.AnimationDone will be true once the 
+            animation finishes animating.<br>
+<p><b>Sprite.CancelMoveTo</b><br>
+<b>Summary:</b> Cancel a MoveTo command.  The sprite will stop moving, and all the waypoints will be removed.<br>
+<p><b>Sprite.ChangeAnimation(System.Int32,System.Int32)</b><br>
+<b>Summary:</b> Start a new animation index from scratch<br>
+<p><b>Sprite.ChangeAnimationSpeed(System.Int32,System.Int32)</b><br>
+<b>Summary:</b> Change the animation speed of a particular animation.  This looks at the first frame
+            and compares that frame to the speed specified.  It adjusts all the animations by the
+            same percentage.<br>
+<p><b>Sprite.ChangeFrameAnimationSpeed(System.Int32,System.Int32,System.Int32)</b><br>
+<b>Summary:</b> Change the animation speed of a specific frame.  Beware.  This affects every sprite using this frame<br>
+<p><b>Sprite.CheckSpriteHitsSprite(SpriteLibrary.Sprite,SpriteLibrary.SpriteCollisionMethod)</b><br>
+<b>Summary:</b> Check to see if two sprites hit each-other.  The sprite collision methods are
+            not all programmed in.<br>
+<p><b>Sprite.ConvertDegreesToRadians(System.Double)</b><br>
+<b>Summary:</b> Convert a number from degrees to radians.<br>
+<p><b>Sprite.ConvertRadiansToDegrees(System.Double)</b><br>
+<b>Summary:</b> Convert a number from radians to degrees.<br>
+<p><b>Sprite.Destroy</b><br>
+<b>Summary:</b> Tell the sprite to kill itself.  It will erase itself and then
+            be removed from the spritelist.  Then it will be gone forever.<br>
+<p><b>Sprite.GetAnimationSpeed(System.Int32)</b><br>
+<b>Summary:</b> Return the animation speed of this particualar animation of the sprite.<br>
+<p><b>Sprite.GetFrameAnimationSpeed(System.Int32,System.Int32)</b><br>
+<b>Summary:</b> Get the animation speed of a single frame.<br>
+<p><b>Sprite.GetImage</b><br>
+<b>Summary:</b> return the current image frame.  Warning:  If you write to this image, it will
+            affect all sprites using this frame.<br>
+<p><b>Sprite.GetImage(System.Int32,System.Int32)</b><br>
+<b>Summary:</b> return the frame for the given index.  Warning:  If you write to this image, it will
+            affect all sprites using this frame.<br>
+<p><b>Sprite.GetMoveToSpritePoint(SpriteLibrary.Sprite)</b><br>
+<b>Summary:</b> Return the point that this sprite needs to be shooting for, for the center of this sprite to 
+            hit the center of the destination sprite.<br>
+<p><b>Sprite.GetSpriteBaseImageCenter</b><br>
+<b>Summary:</b> Return the centerpoint of the sprite, as found on the background image<br>
+<p><b>Sprite.GetSpriteDegrees</b><br>
+<b>Summary:</b> Get the direction that the sprite is traveling in in degrees.  You may want to
+            use Math.Round on the results.  The value returned is usually just a tiny bit off
+            from what you set it with.  For example, if you set the sprite movement direction
+            to be 270 degrees (down), this function may return it as 269.999992.  Rounding the
+            number will give it back to you at probably the same direction you set it as.<br>
+<p><b>Sprite.GetSpritePictureboxCenter</b><br>
+<b>Summary:</b> Return the centerpoint of the sprite, as found on the picturebox<br>
+<p><b>Sprite.GetSpriteRadans</b><br>
+<b>Summary:</b> Returns the direction the sprite is currently traveling, using Radians.<br>
+<p><b>Sprite.GetSpriteVector</b><br>
+<b>Summary:</b> Return the current vector that the sprite is moving along<br>
+<p><b>Sprite.HideSprite</b><br>
+<b>Summary:</b> Remove the sprite from the field.  This does not destroy the sprite.  It simply removes it from action.
+            Use UnhideSprite to show it again.<br>
+<p><b>Sprite.IsPaused(SpriteLibrary.SpritePauseType)</b><br>
+<b>Summary:</b> Ask if the sprite is paused using the specified sprite type (default is PauseAll)<br>
+<p><b>Sprite.MoveTo(SpriteLibrary.Sprite)</b><br>
+<b>Summary:</b> Move to where the destination sprite currently is at.  This is a dumb move.  It does not take into
+            consideration the movement direction of the destination sprite.  So the moving sprite does need to be
+            moving a bit faster than the sprite you are trying to hit for it to do so.<br>
+<p><b>Sprite.MoveTo(System.Collections.Generic.List{System.Drawing.Point})</b><br>
+<b>Summary:</b> Tell the sprite to move towards each point in turn.  The sprite will move in a straight line until the first point.
+            From there it moves to the next point, until it has reached the last point.  Every time it reaches a point, the
+            SpriteArrivedAtWaypoint event is triggered.  When it reaches the final point in the list, the SpriteArrivedAtEndPoint
+            event is triggered.  While the sprite is moving, the SpriteReachedEndPoint attribute is set to false.  When it has
+            arrived, it is set to true.<br>
+<p><b>Sprite.MoveTo(System.Drawing.Point)</b><br>
+<b>Summary:</b> Tell the Sprite to move towards a destination.  You need to give the sprite a MovementSpeed
+            and tell the sprite that it can automatically move.  But the sprite will begin a journey towards
+            that point at the MovementSpeed you have set.  When it gets to the point, the SpriteArrivedAtEndPoint event
+            will fire off.  Also, the SpriteReachedEnd bool will be true.<br>
+<p><b>Sprite.NoteSpriteHitsSprite(SpriteLibrary.Sprite,SpriteLibrary.SpriteCollisionMethod)</b><br>
+<b>Summary:</b> This is used when two sprites hit each-other.<br>
+<p><b>Sprite.Pause(SpriteLibrary.SpritePauseType)</b><br>
+<b>Summary:</b> Pause the sprite.  We can pause just the animation (and still let it move), pause movement (and let it animate), or pause everything.<br>
+<p><b>Sprite.PutBaseImageLocation(System.Double,System.Double)</b><br>
+<b>Summary:</b> Put the Sprite at a specified location, using the dimentions of the BackgroundImage.
+            Unless you are using coordinates you have gotten from a mouse-click, this is how you want
+            to place a Sprite somewhere.  It is the easiest way to track things.  But, if you are
+            doing something using mouse-click coordinates, you want to use PutPictureBoxLocation<br>
+<p><b>Sprite.PutBaseImageLocation(System.Drawing.Point)</b><br>
+<b>Summary:</b> Put the Sprite at a specified location, using the dimentions of the BackgroundImage.
+            Unless you are using coordinates you have gotten from a mouse-click, this is how you want
+            to place a Sprite somewhere.  It is the easiest way to track things.  But, if you are
+            doing something using mouse-click coordinates, you want to use PutPictureBoxLocation<br>
+<p><b>Sprite.PutPictureBoxLocation(System.Drawing.Point)</b><br>
+<b>Summary:</b> Put the Sprite at a specified location, using the dimentions of the PictureBox.
+            You want to use this if you got your X/Y position from a mouse-click.  Otherwise,
+            this is the harder way to track things, particularly if your window can resize.  Use
+            PutBaseImageLocation instead.<br>
+<p><b>Sprite.RecalcPictureBoxLocation</b><br>
+<b>Summary:</b> Done when the box resizes.  We need to recompute the picturebox location.  The resize function
+            automatically calls this.  You should never need to do so.<br>
+<p><b>Sprite.ReplaceImage(System.Drawing.Image,System.Int32,System.Int32)</b><br>
+<b>Summary:</b> Replace a sprite image.  It will replace the current frame unless you specify both an animation
+            and the frame within the animation you wish to replace.  Warning:  This replaces the image_frame 
+            for every sprite that uses that is based off the same image.<br>
+<p><b>Sprite.ReturnAdjustmentRatio</b><br>
+<b>Summary:</b> Taking into consideration how the sprite is stretched or shrunk, it
+            returns a SpriteAdjustmentRatio that can be used to work with the sprite
+            itself.<br>
+<p><b>Sprite.SendToBack</b><br>
+<b>Summary:</b> Make the sprite go behind all other sprites<br>
+<p><b>Sprite.SendToFront</b><br>
+<b>Summary:</b> Make the sprite show up in front of all other sprites.<br>
+<p><b>Sprite.SetName(System.String)</b><br>
+<b>Summary:</b> Give this sprite a name.  This way we can make a duplicate of it by specifying the name<br>
+<p><b>Sprite.SetSize(System.Drawing.Size)</b><br>
+<b>Summary:</b> Resize the sprite using the base image coordinates.  The width and height specified
+            are relative to the size of the background image, not the picturebox.<br>
+<p><b>Sprite.SetSpriteDirection(System.Windows.Vector)</b><br>
+<b>Summary:</b> Set the sprite direction using a vector.  The vector may contain
+            a speed as well as the movement delta (amount of x shift, and amount
+            of y shift.)  If so, this function may also affect the movement speed
+            Most people prefer to use SetSpriteDirectionDegrees instead of using
+            vectors.<br>
+<p><b>Sprite.SetSpriteDirectionDegrees(System.Double)</b><br>
+<b>Summary:</b> Given a "degree" (from 0 to 360, set the direction
+            that the sprite moves automatically.  0 is right, 90 is up, 180 is left
+            and 270 is down.<br>
+<p><b>Sprite.SetSpriteDirectionRadians(System.Double)</b><br>
+<b>Summary:</b> Set the sprite direction using Radians.  Most people do not want to use this.
+            Use SetSpriteDirectionDegrees instead unless you like math and know what you
+            are doing with Radians.<br>
+<p><b>Sprite.SetSpriteDirectionToPoint(System.Drawing.Point)</b><br>
+<b>Summary:</b> Sets the Sprite Moving towards a given point.  You are responsible to do something with it once it gets there.
+            If you want it to automatically stop upon reaching it, use MoveTo instead.  Actually, the MoveTo function works
+            a lot better than this one.  Because of integer rounding and a few other things, this function is a little
+            bit imprecise.  If you send it towards a point, it will go in that general direction.  The MoveTo function
+            will perpetually recalculate its way to the destination point and actually reach that point.  SetSpriteDirectionToPoint
+            will sort-of head in the direction of the point.  But MoveTo will go to that point.<br>
+<p><b>Sprite.SpriteAdjustedPoint(System.Drawing.Point)</b><br>
+<b>Summary:</b> Because sprites are scaled (shrunk or stretched), this function finds the point
+            within the sprite that is specified by the location.  this function is used by
+            a number of internal processes, but may be useful to you.  But probably not.<br>
+<p><b>Sprite.SpriteAtImagePoint(System.Drawing.Point,SpriteLibrary.SpriteCollisionMethod)</b><br>
+<b>Summary:</b> Check to see if the sprite exists at the point specified.  The point given is
+            in coordinates used by the image (not the PictureBox, use SpriteAtPictureBox for that)<br>
+<p><b>Sprite.SpriteAtPictureBoxPoint(System.Drawing.Point,SpriteLibrary.SpriteCollisionMethod)</b><br>
+<b>Summary:</b> Return true or false, asking if the specifiec sprite is at the point on the picturebox.
+            You can use this with a mouse-click to see if you are clicking on a sprite.  Use the 
+            SpriteCollisionMethod "transparent" to see if you have clicked on an actual pixel of the 
+            sprite instead of just within the sprite rectangle.<br>
+<p><b>Sprite.SpriteCanMoveOnImage(System.Drawing.Point)</b><br>
+<b>Summary:</b> Return true if the sprite can go to this point and still be on the drawing-board.<br>
+<p><b>Sprite.SpriteCanMoveOnPictureBox(System.Drawing.Point)</b><br>
+<b>Summary:</b> Return true if the sprite can go to this point and still be on the drawing-board.<br>
+<p><b>Sprite.SpriteIntersectsRectangle(System.Drawing.Rectangle)</b><br>
+<b>Summary:</b> Check to see if the specified rectangle overlaps with the sprite.<br>
+<p><b>Sprite.Tick</b><br>
+<b>Summary:</b> This is run from the sprite controller every 10 miliseconds.  You should never
+            need to call this yourself.<br>
+<p><b>Sprite.UnPause(SpriteLibrary.SpritePauseType)</b><br>
+<b>Summary:</b> unpause the sprite.<br>
+<p><b>Sprite.UnhideSprite</b><br>
+<b>Summary:</b> Make the sprite reappear.  If you have not positioned it yet, it will show up at the top corner.  It is best to only
+            use this when you have hidden it using HideSprite<br>
+<p><b>Constructor: SpriteController.(System.Windows.Forms.PictureBox)</b><br>
+<b>Summary:</b> Create a sprite controller, specifying the picturebox on which the sprites
+            will be displayed.<br>
+<p><b>Constructor: SpriteController.(System.Windows.Forms.PictureBox,System.EventHandler)</b><br>
+<b>Summary:</b> Create a sprite controller, specifying the picturebox on which the sprites
+            will be displayed.<br>
+<p><b>SpriteController.AddSprite(SpriteLibrary.Sprite)</b><br>
+<b>Summary:</b> Add the specified sprite to the list of sprites we know about.  You usually do not need to do this.
+            Sprites add themselves to the controller when you create a new sprite.<br>
+<p><b>SpriteController.AdjustPoint(System.Drawing.Point)</b><br>
+<b>Summary:</b> Adjust an image point so that it conforms to the picturebox.<br>
+<p><b>SpriteController.AdjustRectangle(System.Drawing.Rectangle)</b><br>
+<b>Summary:</b> Adjust a rectangle that is based on the image, according to the stretch of the picturebox<br>
+<p><b>SpriteController.AllSprites</b><br>
+<b>Summary:</b> Return a list of all sprites<br>
+<p><b>SpriteController.ChangeTickInterval(System.Int32)</b><br>
+<b>Summary:</b> Change the Tick Interval.  By default, the spritecontroller does a tick every 10ms, which
+            is very short.  Some people may prefer it to happen less regularly. Must be > 5, and less than 1001<br>
+<p><b>SpriteController.CountSpritesBasedOff(System.String)</b><br>
+<b>Summary:</b> Count the number of sprites that were duplicated from the sprite with the specified name<br>
+<p><b>SpriteController.DestroyAllSprites</b><br>
+<b>Summary:</b> Remove all sprites (even named sprites that have not yet been displayed)<br>
+<p><b>SpriteController.DestroySprite(SpriteLibrary.Sprite)</b><br>
+<b>Summary:</b> Tell a sprite to destroy itself.  The sprite will have Destroying property set to true from
+            the time you destroy it until it vanishes.  Whe you destroy a sprite, it will erase itself 
+            and remove itself from the controller.  After it is destroyed, it is completely gone.<br>
+<p><b>SpriteController.DuplicateSprite(SpriteLibrary.Sprite)</b><br>
+<b>Summary:</b> Make a duplicate of the specified sprite.  The duplicate does not yet have a location.<br>
+<p><b>SpriteController.DuplicateSprite(System.String)</b><br>
+<b>Summary:</b> Find a sprite that has been named with the specified name.  Then duplicate that sprite<br>
+<p><b>SpriteController.Invalidate(System.Boolean)</b><br>
+<b>Summary:</b> Invalidate the entire image on which the sprites are drawn<br>
+<p><b>SpriteController.Invalidate(System.Drawing.Rectangle,System.Boolean)</b><br>
+<b>Summary:</b> Invalidate a rectangle that is specified in image coordinates<br>
+<p><b>SpriteController.IsKeyPressed</b><br>
+<b>Summary:</b> Check to see if any keys are pressed.<br>
+<p><b>SpriteController.IsKeyPressed(System.Windows.Forms.Keys)</b><br>
+<b>Summary:</b> Check to see if the given key is pressed.<br>
+<p><b>SpriteController.KeysPressed</b><br>
+<b>Summary:</b> Return a list of all the keys that are currently pressed.<br>
+<p><b>SpriteController.Local_Setup</b><br>
+<b>Summary:</b> Define some things and set up some things that need defining at instantiation<br>
+<p><b>SpriteController.MouseClickOnBox(System.Object,System.Windows.Forms.MouseEventArgs)</b><br>
+<b>Summary:</b> This is what happens when someone clicks on the PictureBox.  We want to pass any Click events to the Sprite<br>
+<p><b>SpriteController.MouseHover(System.Object,System.EventArgs)</b><br>
+<b>Summary:</b> Check to see if we are hovering over anything<br>
+<p><b>SpriteController.NameSprite(SpriteLibrary.Sprite,System.String)</b><br>
+<b>Summary:</b> Find the specified Sprite in the controller and change its name to the specified string.
+            You can do the same thing with Sprite.SetName(Name)<br>
+<p><b>SpriteController.Pause(SpriteLibrary.SpritePauseType)</b><br>
+<b>Summary:</b> Pause everything<br>
+<p><b>SpriteController.PlaceSpriteBehind(SpriteLibrary.Sprite,SpriteLibrary.Sprite)</b><br>
+<b>Summary:</b> Change the display order of the sprites such that the specified sprite appears behind the other sprite.<br>
+<p><b>SpriteController.PlaceSpriteInFrontOf(SpriteLibrary.Sprite,SpriteLibrary.Sprite)</b><br>
+<b>Summary:</b> Make the sprite go in front of the specified sprite.<br>
+<p><b>SpriteController.PlayAsync(System.IO.Stream,System.String,System.EventHandler)</b><br>
+<b>Summary:</b> Play a sound bit in a separate thread.  When the thread is done, set a bool saying that<br>
+<p><b>SpriteController.ProcessImageResize(System.Object,System.EventArgs)</b><br>
+<b>Summary:</b> Process a form resize by recalculating all the picturebox locations for all sprites.<br>
+<p><b>SpriteController.RegisterKeyDownFunction(SpriteLibrary.SpriteKeyEventHandler)</b><br>
+<b>Summary:</b> If you want to have a KeyDown function that is triggered by a keypress function, add the event here.
+            The event should have the parameters (object sender, KeyEventArgs e)<br>
+<p><b>SpriteController.RegisterKeyUpFunction(SpriteLibrary.SpriteKeyEventHandler)</b><br>
+<b>Summary:</b> If you want to have a KeyUp function that is triggered by a keypress function, add the event here.
+            The event should have the parameters (object sender, KeyEventArgs e)<br>
+<p><b>SpriteController.ReplaceOriginalImage</b><br>
+<b>Summary:</b> Notify the sprite controller that you have changed the background image on the
+            PictureBox.  Whatever background is on the picturebox is now used to draw all the sprites on.<br>
+<p><b>SpriteController.ReplaceOriginalImage(System.Drawing.Image)</b><br>
+<b>Summary:</b> Replace the image on which the sprites are drawn.  Use this when you move to a new playing field, 
+            or want to have a different background<br>
+<p><b>SpriteController.ResetKeypressState</b><br>
+<b>Summary:</b> Reset the keypress status.  Sometimes the sprite controller misses a key being released (usually
+            because a window has taken priority, or something has changed).  Calling this function will reset
+            the stored memory of whether a key has been pressed.<br>
+<p><b>SpriteController.ReturnAdjustmentRatio</b><br>
+<b>Summary:</b> Return an adjustment ratio.  This is the image-size to picture-box ratio.
+            It is used for calculating precise pixels or picture-box locations.<br>
+<p><b>SpriteController.ReturnPictureBoxAdjustedHeight(System.Int32)</b><br>
+<b>Summary:</b> Return the height of an object in picture-box terms.  It is basically the virtual height
+            of the sprite or other item.<br>
+<p><b>SpriteController.ReturnPictureBoxAdjustedPoint(System.Drawing.Point)</b><br>
+<b>Summary:</b> This does the reverse of an adjusted point.  It takes a point on the image and 
+            transforms it to one on the PictureBox<br>
+<p><b>SpriteController.ReturnPictureBoxAdjustedWidth(System.Int32)</b><br>
+<b>Summary:</b> Return the width of an object in picture-box terms.  It takes the width of a sprite or other
+            item that is being displayed on the screen, and calculates the width as displayed in the
+            picture-box (taking into consideration stretching or shrinking)<br>
+<p><b>SpriteController.ReturnPointAdjustedForImage(System.Drawing.Point)</b><br>
+<b>Summary:</b> This takes a point, the location on a picturebox, and returns the corresponding point on the BackgroundImage.<br>
+<p><b>SpriteController.SoundIsFinished(System.String)</b><br>
+<b>Summary:</b> Check to see if the specified sound has finished playing<br>
+<p><b>SpriteController.SoundPlay(System.IO.Stream,System.String)</b><br>
+<b>Summary:</b> Play a sound that we can check to see if it has completed.<br>
+<p><b>SpriteController.SpriteBackwards(SpriteLibrary.Sprite)</b><br>
+<b>Summary:</b> Change the display order of the specified sprite so it is more likely to go behind all other sprites.<br>
+<p><b>SpriteController.SpriteForwards(SpriteLibrary.Sprite)</b><br>
+<b>Summary:</b> Change the display order of the specified sprite so it is more likely to go in front of other sprites<br>
+<p><b>SpriteController.SpriteFromName(System.String)</b><br>
+<b>Summary:</b> Find a sprite that has a specified name.  This returns the actual sprite with that name.
+            You usually want to use DuplicateSprite(Name) to clone the sprite and get one you can
+            destroy.  If you destroy a named sprite without duplicating it, you may end up losing
+            it for the remainder of the program.<br>
+<p><b>SpriteController.SpriteToBack(SpriteLibrary.Sprite)</b><br>
+<b>Summary:</b> Change the display order of the specified sprite so it goes behind all other sprites.<br>
+<p><b>SpriteController.SpriteToFront(SpriteLibrary.Sprite)</b><br>
+<b>Summary:</b> Change the display order of the specified sprite so it goes in front of all other sprites.<br>
+<p><b>SpriteController.SpritesAtImagePoint(System.Drawing.Point)</b><br>
+<b>Summary:</b> This takes a point, as as specified on the image, and returns the sprites at that point.<br>
+<p><b>SpriteController.SpritesAtPoint(System.Drawing.Point)</b><br>
+<b>Summary:</b> This takes a point, as given by the mouse-click args, and returns the sprites at that point.<br>
+<p><b>SpriteController.SpritesBasedOff(System.String)</b><br>
+<b>Summary:</b> Return all sprites that were based off a particular sprite name<br>
+<p><b>SpriteController.SpritesBasedOffAnything</b><br>
+<b>Summary:</b> Return a list of all sprites which are not master sprites (have been based off something)<br>
+<p><b>SpriteController.SpritesInImageRectangle(System.Drawing.Rectangle)</b><br>
+<b>Summary:</b> Return a list of all the sprites that intersect with the given background-image-based rectangle<br>
+<p><b>SpriteController.SpritesThatHaveBeenDrawn</b><br>
+<b>Summary:</b> Return a list of all sprites which have been drawn on the image<br>
+<p><b>SpriteController.TimerTick(System.Object,System.EventArgs)</b><br>
+<b>Summary:</b> The function called by the timer every 10 millisecods  We also call do_tick, which
+            is the function defined by the user.<br>
+<p><b>SpriteController.UnPause(SpriteLibrary.SpritePauseType)</b><br>
+<b>Summary:</b> un-Pause everything<br>
+<h2>Events</h2>
+<p><b>Sprite.CheckBeforeMove</b><br>
+<b>Summary:</b> This event fires off before a sprite is drawn. Use it if you have constraints.  You 
+            can change the location or cancel the move entirely.<br>
+<p><b>Sprite.Click</b><br>
+<b>Summary:</b> This event happens when someone clicks on the sprite (on the rectangle in which the sprite is).
+            If you want the event to fire off only when someone clicks on the visible part of the sprite,
+            use ClickTransparent instead.<br>
+<p><b>Sprite.ClickTransparent</b><br>
+<b>Summary:</b> This event happens when someone clicks on the sprite (on the sprite image itself).
+            If the sprite is sometimes hidden, but you want the click to work even if it is not
+            visible at that instant, use Click instead.<br>
+<p><b>Sprite.MouseEnter</b><br>
+<b>Summary:</b> When the mouse moves over the sprite.  Use this for a menu, when you want the menu item to glow when the
+            mouse is over the menu item sprite.<br>
+<p><b>Sprite.MouseHover</b><br>
+<b>Summary:</b> This event happens when the mouse moves over the sprite, and then pauses.  We use the hover timing from the
+            parent form.<br>
+<p><b>Sprite.MouseLeave</b><br>
+<b>Summary:</b> When the mouse moves off the sprite.  Use this for a menu, when you want the menu item to stop glowing when
+            the mouse moves away from the menu item sprite.<br>
+<p><b>Sprite.SpriteAnimationComplete</b><br>
+<b>Summary:</b> Only used when you tell an animation to animate once.  At the end of the animation, 
+            this function fires off.<br>
+<p><b>Sprite.SpriteArrivedAtEndPoint</b><br>
+<b>Summary:</b> An event for when you tell a Sprite to MoveTo(Point) a specific point, or, when you 
+            tell the Sprite to MoveTo(list of points).  When the Sprite has reached the final destination,
+            the Sprite fires off this event.<br>
+<p><b>Sprite.SpriteArrivedAtWaypoint</b><br>
+<b>Summary:</b> When you tell a sprite to MoveTo(list of points), this fires off every time it gets to
+            one of the points.  When it gets to the final point, only the SpriteAtEndPoint event fires off.<br>
+<p><b>Sprite.SpriteBeingDestroyed</b><br>
+<b>Summary:</b> The Sprite has just been told to be destroyed.  You might want to do some cleanup.
+            If you need to destroy some payload data, or tell something to cleanup after the sprite
+            this is where to do that.<br>
+<p><b>Sprite.SpriteChangesAnimationFrames</b><br>
+<b>Summary:</b> When the frame of an animation changes.  If you want to have something happen every time
+            the foot of your monster comes down, when the swing of your sword is at certain points, etc.
+            Check to see that the Animaton and FrameIndex are what you expect them to be.<br>
+<p><b>Sprite.SpriteExitsPictureBox</b><br>
+<b>Summary:</b> This happens when the sprite has exited the picture box.  Useful when you want to 
+            keep sprites from traveling on forever after exiting.<br>
+<p><b>Sprite.SpriteHitsPictureBox</b><br>
+<b>Summary:</b> This happens when the sprite hits the border of the picture-box.  
+            Useful for when you want to have shots explode when they hit the side.<br>
+<p><b>Sprite.SpriteHitsSprite</b><br>
+<b>Summary:</b> This happens when two sprites hit each-other.  The SpriteEventArgs that is returned 
+            contains the sprite that this sprite hits.<br>
+<p><b>Sprite.SpriteInitializes</b><br>
+<b>Summary:</b> This event happens right after the sprite is created.  Use this to immediately set a 
+            sprite to animate once or something like that.<br>
+<p><b>SpriteController.DoTick</b><br>
+<b>Summary:</b> Define a stub for an event handler that the programmer can define if they want to run
+            something on the tick, along with the sprite animations.<br>
+<h2>Functions</h2>
+<p><b>Sprite.CannotMoveOutsideBox</b><br>
+<b>Summary:</b> Determine if the sprite will automatically move outside the box.  If not, it will hit the side of the box and stick<br>
+<p><b>Sprite.MirrorHorizontally</b><br>
+<b>Summary:</b> Flip the image when it gets printed.  If your sprite is walking left, flipping it will
+            make it look like it is going right.<br>
+<p><b>Sprite.MirrorVertically</b><br>
+<b>Summary:</b> Flip the image when it gets printed.  If your sprite looks like it is facing up, doing 
+            this will make it look like it faces down.<br>
+<p><b>Sprite.MovementSpeed</b><br>
+<b>Summary:</b> The movement speed of the sprite.  To make a Sprite move, you need to set the MovementSpeed,
+            the direction (using SetSpriteDirection), and the AutomaticallyMoves property.<br>
+<p><b>Sprite.MovingToSprite</b><br>
+<b>Summary:</b> If we are trying to collide with a sprite, we store that sprite here.<br>
+<p><b>Sprite.payload</b><br>
+<b>Summary:</b> A Sprite can hold a payload.  Use this to store extra information about the various Sprites.  Health, Armor,
+            Shoot time, etc.  But, to store information in the payload, you need to make a new class of SpritePayload.  The syntax
+            for doing so is: public class TankPayload : SpritePayload {  public int Armor; public int Speed; }
+            You can access the payload and retrieve the various values.<br>
+<p><b>SpriteAdjustmentRatio.height_ratio</b><br>
+<b>Summary:</b> Divide a picturebox ratio by this to get the image location.  Multiply an image location by this to get the picturebox location.<br>
+<p><b>SpriteAdjustmentRatio.width_ratio</b><br>
+<b>Summary:</b> Divide a picturebox ratio by this to get the image location.  Multiply an image location by this to get the picturebox location.<br>
+<p><b>SpriteCollisionMethod.circle</b><br>
+<b>Summary:</b> Draws a circle (ellipse) inside the sprite rectangles and see if those ellipses overlap<br>
+<p><b>SpriteCollisionMethod.rectangle</b><br>
+<b>Summary:</b> Checks if the two rectangles that contain the sprites overlap<br>
+<p><b>SpriteCollisionMethod.transparency</b><br>
+<b>Summary:</b> Check to see if nontransparent portions of a sprite collide.  Not working.<br>
+<p><b>SpriteController.InvalidateList</b><br>
+<b>Summary:</b> This is only used by the SpriteController.  It allows us to queue up invalidation requests.<br>
+<p><b>SpriteController.OptimizeForLargeSpriteImages</b><br>
+<b>Summary:</b> If your sprite images need substantial growing or shrinking when displayed, you can try setting this to "true"
+            to see if it makes it run any faster.  What it does is to resize the image once, and keep a cached copy of that
+            image at that size.  If you use the same sprite, but with different sizes, setting this to "True" may actually slow
+            down the game instead of speeding it up.<br>
+<p><b>SpriteController.RandomNumberGenerator</b><br>
+<b>Summary:</b> Since everything needs a random number generator, we make one that should be accessible throughout your program.<br>
+<p><b>SpriteController.SpriteComparisonDelegate</b><br>
+<b>Summary:</b> Allow the sprite sort-method to be overridden.  The default sprite sort method is: 
+            SpriteComparisonDelegate = delegate (Sprite first, Sprite second) { return first.Zvalue.CompareTo(second.Zvalue); };
+            Which compares just the Zvalues of the two sprites.  Often you will want to have a more refined sort.  The sort
+            order determines which sprites appear on top of other sprites.  In the default state, if two sprites have the
+            same Zvalue, it is very uncleaer which one will draw on top of the other one.  By overridding this sort function,
+            you can specify a very precise order of which sprite is on top and which is behind.<br>
+<p><b>SpriteEventArgs.Cancel</b><br>
+<b>Summary:</b> Used primarily in the CheckBeforeMove event.  If you set cancel to true, then the move fails.
+            You can use this to keep a Sprite from going places where it ought not to go.<br>
+<p><b>SpriteEventArgs.CollisionMethod</b><br>
+<b>Summary:</b> The CollisionMethod used in the event.  Currently, only rectangle collisions are used<br>
+<p><b>SpriteEventArgs.NewLocation</b><br>
+<b>Summary:</b> For the CheckBeforeMove event, newlocation will be the location the sprite is trying
+            to move to. You can adjust the point (move it left, right, up, down) and it will affect
+            the placement of the sprite.<br>
+<p><b>SpriteEventArgs.TargetSprite</b><br>
+<b>Summary:</b> If another Sprite is involved in the event (Collision), than that Sprite is included here.
+            It will be null if no other Sprite is involved.<br>
+<p><b>SpritePauseType.PauseAll</b><br>
+<b>Summary:</b> All pausable things are paused.<br>
+<p><b>SpritePauseType.PauseAnimation</b><br>
+<b>Summary:</b> Pause the animating.  Animation resumes from the current frame when we unpause<br>
+<p><b>SpritePauseType.PauseEvents</b><br>
+<b>Summary:</b> Pause events. Sprite collisions, movement checks, etc are stopped until the unpause<br>
+<p><b>SpritePauseType.PauseMovement</b><br>
+<b>Summary:</b> Pause any automatic movement.  Movement resumes where it was left off if you unpause<br>
+</HTML>
