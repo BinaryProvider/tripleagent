@@ -57,7 +57,7 @@ namespace TripleAgentDemo
             SpriteAnimation anim = tripleAgentControl2.SpriteAnimations[1];
             tripleAgentControl2.PlayAnimation(anim);
 
-            //tripleAgentControl2.ShowTip(anim, new Point(0, 0), new Point(140, 20), new Size(400, 0), "Make sure you phrase the link as the continuation of the following statement: I want to...", 1000, 3000);
+            //tripleAgentControl2.ShowTip(anim, new Point(0, 0), new Point(140, 20), new Size(400, 0), "Hi! I'm Clippy! Use me to let users know what to do in your application.", 1000, 3000);
 
         }
     }
