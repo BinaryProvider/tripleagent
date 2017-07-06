@@ -28,10 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.button1 = new System.Windows.Forms.Button();
             this.tripleAgentControl2 = new TripleAgent.TripleAgent();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // button1
@@ -48,25 +46,24 @@
             this.tripleAgentControl2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tripleAgentControl2.BackColor = System.Drawing.Color.Transparent;
-            this.tripleAgentControl2.Location = new System.Drawing.Point(651, 272);
+            this.tripleAgentControl2.BackColor = System.Drawing.SystemColors.Control;
+            this.tripleAgentControl2.Location = new System.Drawing.Point(12, 12);
             this.tripleAgentControl2.Name = "tripleAgentControl2";
-            this.tripleAgentControl2.Size = new System.Drawing.Size(387, 342);
+            this.tripleAgentControl2.Size = new System.Drawing.Size(1026, 441);
             this.tripleAgentControl2.SpriteHiddenFromStart = false;
             this.tripleAgentControl2.SpriteSheet = global::TripleAgentDemo.Properties.Resources.clippy_spritesheet;
             this.tripleAgentControl2.SpriteSize = new System.Drawing.Size(124, 93);
             this.tripleAgentControl2.SpriteStartFrame = 1;
-            this.tripleAgentControl2.SpriteStartLocation = System.Drawing.ContentAlignment.MiddleCenter;
+            this.tripleAgentControl2.SpriteStartLocation = new System.Drawing.Point(0, 0);
             this.tripleAgentControl2.TabIndex = 0;
-            this.toolTip1.SetToolTip(this.tripleAgentControl2, "gdsfagfsdagdsagdsa");
             // 
             // DemoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1050, 657);
-            this.Controls.Add(this.tripleAgentControl2);
+            this.ClientSize = new System.Drawing.Size(1050, 465);
             this.Controls.Add(this.button1);
+            this.Controls.Add(this.tripleAgentControl2);
             this.Name = "DemoForm";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.DemoForm_Load);
@@ -78,7 +75,6 @@
 
         private TripleAgent.TripleAgent tripleAgentControl2;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
 

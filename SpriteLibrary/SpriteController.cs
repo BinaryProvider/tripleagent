@@ -224,9 +224,14 @@ namespace SpriteLibrary
             //when we want to erase a sprite and re-draw it elsewhere.
             if (DrawingArea.BackgroundImage == null)
             {
-                DrawingArea.BackgroundImage = new Bitmap(DrawingArea.Width, DrawingArea.Height);
-                Graphics.FromImage(DrawingArea.BackgroundImage).FillRectangle(new SolidBrush(Form.DefaultBackColor),
-                    new Rectangle(0, 0, DrawingArea.Width, DrawingArea.Height)); //Fill it with the default background color.
+                Bitmap bmp = new Bitmap(DrawingArea.Width, DrawingArea.Height);
+                using (Graphics g = Graphics.FromImage(bmp))
+                {
+                    g.FillRectangle(new SolidBrush(DrawingArea.BackColor), new Rectangle(0, 0, DrawingArea.Width, DrawingArea.Height)); //Fill it with the default background color.
+                    //g.Clear(Color.Transparent);
+                }
+
+                DrawingArea.BackgroundImage = bmp;
             }
             MyOriginalImage = (Image)DrawingArea.BackgroundImage.Clone(); //Duplicate it and store it
                                                                           //The messagefilter allows us to check for keypresses.

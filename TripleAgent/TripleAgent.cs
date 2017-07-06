@@ -49,10 +49,10 @@ namespace TripleAgent
             }
         }
 
-        private ContentAlignment _spriteStartLocation = ContentAlignment.TopLeft;
+        private Point _spriteStartLocation = new Point(0, 0);
 
         [Browsable(true)]
-        public ContentAlignment SpriteStartLocation
+        public Point SpriteStartLocation
         {
             get { return _spriteStartLocation; }
             set { _spriteStartLocation = value; }
@@ -74,7 +74,13 @@ namespace TripleAgent
         public List<SpriteAnimation> SpriteAnimations
         {
             get { return _spriteAnimations; }
-            set { _spriteAnimations = value; }
+            set {
+                _spriteAnimations = value;
+                for (int i = 0; i < _spriteAnimations.Count; i++)
+                {
+                    _spriteAnimations[i].Index = i;
+                }
+            }
         }
 
         private PictureBox _canvas = new PictureBox();
@@ -100,7 +106,7 @@ namespace TripleAgent
                     CreateCanvas();
 
                     _spriteController = new SpriteController(_canvas);
-                    _sprite = new Sprite(FrameLoc(_spriteStartFrame), _spriteController, _spriteSheet, _spriteSize.Width, _spriteSize.Height, 100, 1);
+                    _sprite = new Sprite(Utils.SpriteSheetFrameIndexToPoint(_spriteSheet, _spriteSize, _spriteStartFrame), _spriteController, _spriteSheet, _spriteSize.Width, _spriteSize.Height, 100, 1);
                     _sprite.SpriteAnimationComplete += SpriteAnimationComplete;
                     _sprite.SpriteChangesAnimationFrames += SpriteChangesAnimationFrames;
 
@@ -108,98 +114,112 @@ namespace TripleAgent
 
                     if (!_spriteHiddenFromStart)
                     {
-                        _sprite.PutBaseImageLocation(AlignmentToPoint(_spriteStartLocation));
+                        _sprite.PutBaseImageLocation(_spriteStartLocation);
                     }
-
                 }
             }
         }
 
+        public void HideTip()
+        {
+            this.Controls.RemoveByKey("TooltipLabel");
+            this.Controls.RemoveByKey("TooltipArrow");
+        }
+
+        public void ToggleSpritevisibility(bool show)
+        {
+            if (!show)
+            {
+                _sprite.HideSprite();
+            } else
+            {
+                _sprite.UnhideSprite();
+            }
+        }
+
+        public void ShowTip(SpriteAnimation animation, Point spriteLocation, Point labelLocation, Size labelSize, string labelText, int spriteDelay = 0, int labelDelay = 0)
+        {
+            Point arrowOffset = new Point(1, 0);
+
+            Label label = new Label();
+            label.Name = "TooltipLabel";
+            this.Controls.Add(label);
+            label.Text = labelText;
+            label.BorderStyle = BorderStyle.FixedSingle;
+            label.BackColor = Color.FromArgb(255, 255, 203);
+
+            Font f = new Font(this.Font.FontFamily, 12);
+            label.Font = f;
+
+            label.TextAlign = ContentAlignment.MiddleLeft;
+
+            label.AutoSize = true;
+            label.Padding = new Padding(10);
+            label.MaximumSize = labelSize;
+
+            label.Location = labelLocation;
+            label.BringToFront();
+
+            PictureBox arrow = new PictureBox();
+            arrow.Name = "TooltipArrow";
+            arrow.BackgroundImage = Properties.Resources.left_arrow;
+            arrow.BackgroundImageLayout = ImageLayout.Center;
+            arrow.Size = arrow.BackgroundImage.Size;
+
+            Point arrowLocation = labelLocation;
+
+            if (labelLocation.X > spriteLocation.X)
+            {
+                arrowLocation = labelLocation;
+                arrowLocation.Offset(-arrow.Width + arrowOffset.X, (label.Height / 2) - (arrow.Height / 2) + arrowOffset.Y);
+            }
+            else if(labelLocation.X < spriteLocation.X)
+            {
+                arrow.BackgroundImage = Properties.Resources.right_arrow;
+                arrowLocation.Offset(label.Width - arrowOffset.X, (label.Height / 2) - (arrow.Height / 2) + arrowOffset.Y);
+            }
+
+            arrow.Location = arrowLocation;
+
+            this.Controls.Add(arrow);
+            arrow.BringToFront();
+
+            label.Hide();
+            arrow.Hide();
+
+            Task.Factory.StartNew(() =>
+            {
+                Thread.Sleep(spriteDelay);
+                this.Invoke(new Action(() => {
+                    _sprite.PutBaseImageLocation(spriteLocation);
+                    PlayAnimation(animation);
+                }));
+            });
+
+            Task.Factory.StartNew(() =>
+            {
+                Thread.Sleep(labelDelay);
+                this.Invoke(new Action(() => {
+                    label.Show();
+                    arrow.Show();
+                    label.BringToFront();
+                    arrow.BringToFront();
+                }));
+            });
+        }
+
         private void CreateCanvas()
         {
+            _canvas.BackColor = this.BackColor;
             _canvas.Location = new Point(0, 0);
             _canvas.Size = this.Size;
             _canvas.BackgroundImageLayout = ImageLayout.Stretch;
             this.Controls.Add(_canvas);
         }
 
-        public void AddAnimationData(XmlDocument doc)
+        public void LoadAnimationData(XmlDocument doc)
         {
-            SpriteAnimations.Clear();
-
-            XmlNodeList animationsData = doc.SelectNodes("//animation");
-            foreach(XmlNode animationData in animationsData)
-            {
-                if (animationData.Attributes["name"] == null)
-                    throw new Exception("Invalid animation data. No animation name.");
-
-                string name = animationData.Attributes["name"].Value;
-                int frameduration = 100;
-                int subsequentanimationindex = -1;
-
-                XmlNode startFrame = animationData.SelectSingleNode("startframe");
-                XmlNode endFrame = animationData.SelectSingleNode("endframe");
-
-                if(animationData.Attributes["frameduration"] != null)
-                {
-                    if (!int.TryParse(animationData.Attributes["frameduration"].Value, out frameduration))
-                        frameduration = 100;
-                }
-
-                if (animationData.Attributes["subsequentanimationindex"] != null)
-                {
-                    if (!int.TryParse(animationData.Attributes["subsequentanimationindex"].Value, out subsequentanimationindex))
-                        subsequentanimationindex = -1;
-                }
-
-                if (startFrame == null || endFrame == null)
-                    throw new Exception("Invalid animation data. Frames could not be parsed.");
-
-                if ((startFrame.Attributes["x"] == null || startFrame.Attributes["y"] == null) && startFrame.Attributes["num"] == null)
-                    throw new Exception("Invalid animation data. Frames could not be parsed.");
-
-                if ((endFrame.Attributes["x"] == null || endFrame.Attributes["y"] == null) && endFrame.Attributes["num"] == null)
-                    throw new Exception("Invalid animation data. Frames could not be parsed.");
-
-                int startX, startY, endX, endY, startNum, endNum;
-
-                if (startFrame.Attributes["num"] == null)
-                {
-                    if (!int.TryParse(startFrame.Attributes["x"].Value, out startX) || !int.TryParse(startFrame.Attributes["y"].Value, out startY))
-                        throw new Exception("Invalid animation data. Frames could not be parsed.");
-
-                    startNum = LocFrame(new Point(startX, startY));
-                }
-                else
-                {
-                    if (!int.TryParse(startFrame.Attributes["num"].Value, out startNum))
-                        throw new Exception("Invalid animation data. Frames could not be parsed.");
-                }
-
-                if(endFrame.Attributes["num"] == null)
-                {
-                    if (!int.TryParse(endFrame.Attributes["x"].Value, out endX) || !int.TryParse(endFrame.Attributes["y"].Value, out endY))
-                        throw new Exception("Invalid animation data. Frames could not be parsed.");
-
-                    endNum = LocFrame(new Point(endX, endY));
-                }
-                else
-                {
-                    if (!int.TryParse(endFrame.Attributes["num"].Value, out endNum))
-                        throw new Exception("Invalid animation data. Frames could not be parsed.");
-                }
-
-                SpriteAnimation animation = new SpriteAnimation();
-                animation.Name = name;
-                animation.FrameStart = startNum;
-                animation.FrameEnd = endNum;
-                animation.FrameDuration = frameduration;
-
-                if (subsequentanimationindex > -1)
-                    animation.SubsequentAnimationIndex = subsequentanimationindex;
-
-                SpriteAnimations.Add(animation);
-            }
+            SpriteAnimations = SpriteAnimation.ParseAnimationData(doc, _spriteSheet, _spriteSize);
         }
 
         private void AddAnimations()
@@ -210,120 +230,79 @@ namespace TripleAgent
                 int frameEnd = (animation.FrameEnd > 0) ? animation.FrameEnd : 1;
                 int frameTotal = (frameEnd - frameStart);
                 int frameDuration = animation.FrameDuration;
-                Point startLoc = FrameLoc(frameStart);
+                Point startLoc = Utils.SpriteSheetFrameIndexToPoint(_spriteSheet, _spriteSize, frameStart);
                 _sprite.AddAnimation(startLoc, _spriteSheet, _spriteSize.Width, _spriteSize.Height, frameDuration, frameTotal);
             }
         }
 
-        public void PlayAnimation(int animationIndex, int loopTimes, bool loopForever = false)
+        public void PlayAnimation(SpriteAnimation animation, int? loopCount = null, int? loopDelay = null)
         {
             if (_sprite != null)
             {
-                if (loopForever)
-                    loopTimes = Int32.MaxValue;
+                //_sprite.HideSprite();
 
-                if (loopTimes <= 1)
+                // Start animation
+                if(animation == null)
                 {
-                    _sprite.AnimateOnce(animationIndex + 1);
+                    animation = new SpriteAnimation();
+                    animation.Index = -1;
+                    animation.FrameStart = _spriteStartFrame;
+                    animation.FrameEnd = _spriteStartFrame;
+                }
+
+                if (loopCount != null)
+                    animation.LoopCount = (int)loopCount;
+
+                if (loopDelay != null)
+                    animation.LoopDelay = (int)loopDelay;
+
+                if (animation.LoopCount == -1)
+                    animation.LoopCount = Int32.MaxValue;
+
+                if (animation.LoopCount <= 1)
+                {
+                    _sprite.AnimateOnce(animation.Index + 1);
                 }
                 else
                 {
-                    _sprite.AnimateJustAFewTimes(animationIndex + 1, loopTimes);
+                    if (animation.LoopDelay > 0)
+                    {
+                        _sprite.ChangeFrameAnimationSpeed(animation.Index + 1, (animation.FrameEnd - animation.FrameStart) - 1, animation.LoopDelay);
+                    }
+                    _sprite.AnimateJustAFewTimes(animation.Index + 1, animation.LoopCount);
                 }
 
-                if (animationIndex >= 0)
+                if (animation.Index > -1)
                 {
-                    if (_spriteAnimations[animationIndex].SubsequentAnimationIndex != null)
+                    if (_spriteAnimations[animation.Index].SubsequentAnimationIndex != null)
                     {
-                        _spriteAnimationQueue.Enqueue((int)_spriteAnimations[animationIndex].SubsequentAnimationIndex);
+                        _spriteAnimationQueue.Enqueue((int)_spriteAnimations[animation.Index].SubsequentAnimationIndex);
                     }
                 }
 
-                _sprite.UnPause();
+                //_sprite.UnPause();
             }
         }
 
         private void SpriteAnimationComplete(object sender, SpriteEventArgs e)
         {
-            _sprite.Pause();
+            //_sprite.Pause();
 
             if (_spriteAnimationQueue.Count != 0)
             {
-                PlayAnimation(_spriteAnimationQueue.Dequeue(), 1);
+                PlayAnimation(SpriteAnimations[_spriteAnimationQueue.Dequeue()]);
             }
             else
             {
-                PlayAnimation(-1, 1);
+                PlayAnimation(null);
             }
         }
 
         private void SpriteChangesAnimationFrames(object sender, SpriteEventArgs e)
         {
+  
         }
-
-        private int LocFrame(Point point)
-        {
-            int frameNum = 1;
-
-            int numFramesX = (_spriteSheet.Width / _spriteSize.Width);
-            int numFramesY = (_spriteSheet.Height / _spriteSize.Height);
-
-            if (point.X > _spriteSheet.Width - _spriteSize.Width || point.X < 0 || point.Y > _spriteSheet.Height - _spriteSize.Height || point.Y < 0)
-                throw new Exception("Animation frame index out of range.");
-
-            int loopX = 0;
-            int loopY = 0;
-            for (int y = 1; y < numFramesY; y++)
-            {
-                for (int x = 0; x < numFramesX; x++)
-                {
-                    loopX = (_spriteSize.Width * x);
-
-                    if (point.X == loopX && point.Y == loopY)
-                        return frameNum;
-
-                    frameNum++;
-                }
-
-                
-
-                loopY = (_spriteSize.Height * y);
-            }
-
-            return frameNum;
-        }
-
-        private Point FrameLoc(int index)
-        {
-            Point frameLoc = new Point(0, 0);
-
-            int numFramesX = (_spriteSheet.Width / _spriteSize.Width);
-            int numFramesY = (_spriteSheet.Height / _spriteSize.Height);
-
-            if (index < 1)
-                index = 1;
-
-            if(index > (numFramesX * numFramesY))
-                throw new Exception("Animation frame index out of range.");
-
-            int frameNum = 1;
-            for (int y = 0; y < numFramesY; y++)
-            {
-                for (int x = 0; x < numFramesX; x++)
-                {
-                    if(frameNum == index)
-                    {
-                        int locX = (int)(x * _spriteSize.Width);
-                        int locY = (int)(y * _spriteSize.Height);
-                        return new Point(locX, locY);
-                    }
-                    frameNum++;
-                }
-            }
-
-            return frameLoc;
-        }
-
+  
         private Point AlignmentToPoint(ContentAlignment alignment)
         {
             Point p = new Point(0, 0);
@@ -382,9 +361,8 @@ namespace TripleAgent
             // 
             // TripleAgent
             // 
-            this.BackColor = System.Drawing.SystemColors.Control;
             this.Name = "TripleAgent";
-            this.Size = new System.Drawing.Size(52, 60);
+            this.Size = new System.Drawing.Size(267, 233);
             this.ResumeLayout(false);
 
         }
