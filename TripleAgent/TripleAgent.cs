@@ -6,10 +6,14 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Xml;
+using System.Xml.Linq;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace TripleAgent
 {
-    public class TripleAgentControl : UserControl
+    public class TripleAgent : UserControl
     {
         private Image _spriteSheet;
 
@@ -78,7 +82,7 @@ namespace TripleAgent
         private Sprite _sprite;
         private Queue<int> _spriteAnimationQueue = new Queue<int>();
 
-        public TripleAgentControl()
+        public TripleAgent()
         {
             if (SpriteAnimations == null)
                 SpriteAnimations = new List<SpriteAnimation>();
@@ -106,6 +110,7 @@ namespace TripleAgent
                     {
                         _sprite.PutBaseImageLocation(AlignmentToPoint(_spriteStartLocation));
                     }
+
                 }
             }
         }
@@ -116,6 +121,85 @@ namespace TripleAgent
             _canvas.Size = this.Size;
             _canvas.BackgroundImageLayout = ImageLayout.Stretch;
             this.Controls.Add(_canvas);
+        }
+
+        public void AddAnimationData(XmlDocument doc)
+        {
+            SpriteAnimations.Clear();
+
+            XmlNodeList animationsData = doc.SelectNodes("//animation");
+            foreach(XmlNode animationData in animationsData)
+            {
+                if (animationData.Attributes["name"] == null)
+                    throw new Exception("Invalid animation data. No animation name.");
+
+                string name = animationData.Attributes["name"].Value;
+                int frameduration = 100;
+                int subsequentanimationindex = -1;
+
+                XmlNode startFrame = animationData.SelectSingleNode("startframe");
+                XmlNode endFrame = animationData.SelectSingleNode("endframe");
+
+                if(animationData.Attributes["frameduration"] != null)
+                {
+                    if (!int.TryParse(animationData.Attributes["frameduration"].Value, out frameduration))
+                        frameduration = 100;
+                }
+
+                if (animationData.Attributes["subsequentanimationindex"] != null)
+                {
+                    if (!int.TryParse(animationData.Attributes["subsequentanimationindex"].Value, out subsequentanimationindex))
+                        subsequentanimationindex = -1;
+                }
+
+                if (startFrame == null || endFrame == null)
+                    throw new Exception("Invalid animation data. Frames could not be parsed.");
+
+                if ((startFrame.Attributes["x"] == null || startFrame.Attributes["y"] == null) && startFrame.Attributes["num"] == null)
+                    throw new Exception("Invalid animation data. Frames could not be parsed.");
+
+                if ((endFrame.Attributes["x"] == null || endFrame.Attributes["y"] == null) && endFrame.Attributes["num"] == null)
+                    throw new Exception("Invalid animation data. Frames could not be parsed.");
+
+                int startX, startY, endX, endY, startNum, endNum;
+
+                if (startFrame.Attributes["num"] == null)
+                {
+                    if (!int.TryParse(startFrame.Attributes["x"].Value, out startX) || !int.TryParse(startFrame.Attributes["y"].Value, out startY))
+                        throw new Exception("Invalid animation data. Frames could not be parsed.");
+
+                    startNum = LocFrame(new Point(startX, startY));
+                }
+                else
+                {
+                    if (!int.TryParse(startFrame.Attributes["num"].Value, out startNum))
+                        throw new Exception("Invalid animation data. Frames could not be parsed.");
+                }
+
+                if(endFrame.Attributes["num"] == null)
+                {
+                    if (!int.TryParse(endFrame.Attributes["x"].Value, out endX) || !int.TryParse(endFrame.Attributes["y"].Value, out endY))
+                        throw new Exception("Invalid animation data. Frames could not be parsed.");
+
+                    endNum = LocFrame(new Point(endX, endY));
+                }
+                else
+                {
+                    if (!int.TryParse(endFrame.Attributes["num"].Value, out endNum))
+                        throw new Exception("Invalid animation data. Frames could not be parsed.");
+                }
+
+                SpriteAnimation animation = new SpriteAnimation();
+                animation.Name = name;
+                animation.FrameStart = startNum;
+                animation.FrameEnd = endNum;
+                animation.FrameDuration = frameduration;
+
+                if (subsequentanimationindex > -1)
+                    animation.SubsequentAnimationIndex = subsequentanimationindex;
+
+                SpriteAnimations.Add(animation);
+            }
         }
 
         private void AddAnimations()
@@ -131,23 +215,32 @@ namespace TripleAgent
             }
         }
 
-        public void PlayAnimation(int animationIndex, int loopTimes)
+        public void PlayAnimation(int animationIndex, int loopTimes, bool loopForever = false)
         {
-            if (loopTimes <= 1)
+            if (_sprite != null)
             {
-                _sprite.AnimateOnce(animationIndex + 1);
-            }
-            else
-            {
-                _sprite.AnimateJustAFewTimes(animationIndex + 1, loopTimes);
-            }
+                if (loopForever)
+                    loopTimes = Int32.MaxValue;
 
-            if (_spriteAnimations[animationIndex].SubsequentAnimationIndex != null)
-            {
-                _spriteAnimationQueue.Enqueue((int)_spriteAnimations[animationIndex].SubsequentAnimationIndex);
-            }
+                if (loopTimes <= 1)
+                {
+                    _sprite.AnimateOnce(animationIndex + 1);
+                }
+                else
+                {
+                    _sprite.AnimateJustAFewTimes(animationIndex + 1, loopTimes);
+                }
 
-            _sprite.UnPause();
+                if (animationIndex >= 0)
+                {
+                    if (_spriteAnimations[animationIndex].SubsequentAnimationIndex != null)
+                    {
+                        _spriteAnimationQueue.Enqueue((int)_spriteAnimations[animationIndex].SubsequentAnimationIndex);
+                    }
+                }
+
+                _sprite.UnPause();
+            }
         }
 
         private void SpriteAnimationComplete(object sender, SpriteEventArgs e)
@@ -155,11 +248,49 @@ namespace TripleAgent
             _sprite.Pause();
 
             if (_spriteAnimationQueue.Count != 0)
+            {
                 PlayAnimation(_spriteAnimationQueue.Dequeue(), 1);
+            }
+            else
+            {
+                PlayAnimation(-1, 1);
+            }
         }
 
         private void SpriteChangesAnimationFrames(object sender, SpriteEventArgs e)
         {
+        }
+
+        private int LocFrame(Point point)
+        {
+            int frameNum = 1;
+
+            int numFramesX = (_spriteSheet.Width / _spriteSize.Width);
+            int numFramesY = (_spriteSheet.Height / _spriteSize.Height);
+
+            if (point.X > _spriteSheet.Width - _spriteSize.Width || point.X < 0 || point.Y > _spriteSheet.Height - _spriteSize.Height || point.Y < 0)
+                throw new Exception("Animation frame index out of range.");
+
+            int loopX = 0;
+            int loopY = 0;
+            for (int y = 1; y < numFramesY; y++)
+            {
+                for (int x = 0; x < numFramesX; x++)
+                {
+                    loopX = (_spriteSize.Width * x);
+
+                    if (point.X == loopX && point.Y == loopY)
+                        return frameNum;
+
+                    frameNum++;
+                }
+
+                
+
+                loopY = (_spriteSize.Height * y);
+            }
+
+            return frameNum;
         }
 
         private Point FrameLoc(int index)
@@ -245,5 +376,17 @@ namespace TripleAgent
             return p;
         }
 
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // TripleAgent
+            // 
+            this.BackColor = System.Drawing.SystemColors.Control;
+            this.Name = "TripleAgent";
+            this.Size = new System.Drawing.Size(52, 60);
+            this.ResumeLayout(false);
+
+        }
     }
 }

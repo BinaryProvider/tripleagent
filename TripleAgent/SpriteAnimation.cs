@@ -9,7 +9,7 @@ namespace TripleAgent
     [Serializable]
     public class SpriteAnimation
     {
-        public string Description { get; set; }
+        public string Name { get; set; }
 
         private int _frameStart = 1;
         public int FrameStart
@@ -41,7 +41,7 @@ namespace TripleAgent
 
         public override string ToString()
         {
-            return String.Format("{0}", Description);
+            return String.Format("{0}", Name);
         }
     }
 }

@@ -43,7 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="SpriteAnimation.cs" />
-    <Compile Include="TripleAgentControl.cs">
+    <Compile Include="TripleAgent.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -55,8 +55,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TripleAgentControl.resx">
-      <DependentUpon>TripleAgentControl.cs</DependentUpon>
+    <EmbeddedResource Include="TripleAgent.resx">
+      <DependentUpon>TripleAgent.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

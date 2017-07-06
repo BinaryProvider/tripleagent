@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root>
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="ResMimeType">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="Version">
+		<value>1.0.0.0</value>
+	</resheader>
+	<resheader name="Reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=1.0.3102.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="Writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.3102.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="ERR_BW_ANCHOR_VISIBLESCREEN">
+		<value>Cannot anchor balloon at position '{0}.'  The point is not contained within the visible bounds of any screen.</value>
+	</data>
+	<data name="ERR_BW_ANCHOR_CONTROLBOUND">
+		<value>Cannot anchor balloon to the control '{0}.'  The control is obscured by the parent's boundaries and is not visible.</value>
+	</data>
+	<data name="ERR_BW_ANCHOR_ANCHORCONTROL">
+		<value>Cannot anchor balloon at position '{0}.'  The balloon is currently anchored to the control '{1}.'</value>
+	</data>
+	<data name="ERR_BW_MOVE_ANCHORCONTROL">
+		<value>Cannot move balloon to position '{0}.'  The balloon is currently anchored to the control '{1}.'</value>
+	</data>
+	<data name="ERR_BW_ANCHOR_VISIBLECONTROL">
+		<value>Cannot anchor balloon to the control '{0}.'  The control is not contained within the visible bounds of any screen.</value>
+	</data>
+	<data name="ERR_BW_ANCHOR_CONTROLINVISIBLE">
+		<value>Cannot anchor balloon to the control '{0}.'  The control's visibility is set to false.</value>
+	</data>
+	<data name="ERR_BW_PROPERTYSTATE_CANNOTCHANGE">
+		<value>Unable to set property state.  The property is reserved for use by the BalloonWindow class and cannot be changed.</value>
+	</data>
+	<data name="ERR_BW_PARAM_NULSTATE">
+		<value> A GraphicsPath object is required to complete opperation.</value>
+	</data>
+</root>

@@ -225,8 +225,8 @@ namespace SpriteLibrary
             if (DrawingArea.BackgroundImage == null)
             {
                 DrawingArea.BackgroundImage = new Bitmap(DrawingArea.Width, DrawingArea.Height);
-                Graphics.FromImage(DrawingArea.BackgroundImage).FillRectangle(new SolidBrush(Form.DefaultBackColor), 
-                    new Rectangle(0,0, DrawingArea.Width, DrawingArea.Height)); //Fill it with the default background color.
+                Graphics.FromImage(DrawingArea.BackgroundImage).FillRectangle(new SolidBrush(Form.DefaultBackColor),
+                    new Rectangle(0, 0, DrawingArea.Width, DrawingArea.Height)); //Fill it with the default background color.
             }
             MyOriginalImage = (Image)DrawingArea.BackgroundImage.Clone(); //Duplicate it and store it
                                                                           //The messagefilter allows us to check for keypresses.
