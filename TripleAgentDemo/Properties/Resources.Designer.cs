@@ -63,9 +63,9 @@ namespace TripleAgentDemo.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap clippy_spritesheet {
+        internal static System.Drawing.Bitmap demo_spritesheet {
             get {
-                object obj = ResourceManager.GetObject("clippy_spritesheet", resourceCulture);
+                object obj = ResourceManager.GetObject("demo_spritesheet", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

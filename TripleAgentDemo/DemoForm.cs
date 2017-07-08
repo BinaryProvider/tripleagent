@@ -18,47 +18,63 @@ namespace TripleAgentDemo
 {
     public partial class DemoForm : Form
     {
+        TripleAgentControl agent;
+
+        bool isWriting = false;
+
         public DemoForm()
         {
             InitializeComponent();
 
-            XmlDocument doc = new XmlDocument();
-            doc.LoadXml(@"  
+            XmlDocument animationFrames = new XmlDocument();
+            animationFrames.LoadXml(@"  
                 <animations>
-                    <animation name=""Show"">
-                        <startframe num=""824"" />
-                        <endframe num=""854"" />
+                    <animation name=""Push"" loopcount=""-1"" loopdelay=""0"">
+                        <startframe num=""92"" />
+                        <endframe num=""99"" />
                     </animation>
-                    <animation name=""Idle"" loopcount=""-1"" frameduration=""120"" loopdelay=""3000"">
-                        <startframe num=""234"" />
-                        <endframe num=""269"" />
-                    </animation>
-                    <animation name=""Ok"">
-                        <startframe num=""1"" />
-                        <endframe num=""23"" />
-                    </animation>
-                    <animation name=""PointRight"">
-                        <startframe num=""512"" />
-                        <endframe num=""536"" />
-                    </animation>
-                    <animation name=""KnockOnScreen"">
-                        <startframe num=""200"" />
-                        <endframe num=""218"" />
+                    <animation name=""Dance"" loopcount=""-1"" loopdelay=""0"">
+                        <startframe num=""183"" />
+                        <endframe num=""188"" />
                     </animation>
                 </animations>"
             );
 
-            tripleAgentControl2.LoadAnimationData(doc);
+            Size spriteSize = new Size(64, 64);
+            Point spriteLocation = new Point(0, 20);
+            int spriteStartFrame = 183;
+
+            agent = new TripleAgentControl(Properties.Resources.demo_spritesheet, spriteSize, spriteStartFrame, spriteLocation, animationFrames);
+
+            agent.Location = new Point(0, 0);
+            agent.Width = this.Width;
+            agent.Height = this.Height;
+            agent.BackColor = Form.DefaultBackColor;
+
+            Controls.Add(agent);
         }
         private void DemoForm_Load(object sender, EventArgs e)
         {
-            this.Activate();
+            agent.ShowTip(agent.SpriteAnimations[1], "Hi! I'm a TripleAgent! Use me to let users know what to do in your application!", ContentAlignment.MiddleRight, labelDelay: 1000);
+        }
 
-            SpriteAnimation anim = tripleAgentControl2.SpriteAnimations[1];
-            tripleAgentControl2.PlayAnimation(anim);
+        private void someTextbox_TextChanged(object sender, EventArgs e)
+        {
+            if (!isWriting)
+            {
+                isWriting = true;
+                agent.ShowTip(agent.SpriteAnimations[1], "I sense that you are writing something. Well done I like it!", ContentAlignment.MiddleRight);
+            }
+        }
 
-            //tripleAgentControl2.ShowTip(anim, new Point(0, 0), new Point(140, 20), new Size(400, 0), "Hi! I'm Clippy! Use me to let users know what to do in your application.", 1000, 3000);
+        private void someTextbox_Leave(object sender, EventArgs e)
+        {
+            isWriting = false;
+        }
 
+        private void someButton1_Click(object sender, EventArgs e)
+        {
+            agent.ShowTip(agent.SpriteAnimations[1], "Yeah, press that button!", ContentAlignment.MiddleRight);
         }
     }
 }

@@ -47,14 +47,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RoundedLabel.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="SpriteAnimation.cs" />
-    <Compile Include="TransparentControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="TripleAgent.cs">
+    <Compile Include="TripleAgentControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -71,8 +65,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="TripleAgent.resx">
-      <DependentUpon>TripleAgent.cs</DependentUpon>
+    <EmbeddedResource Include="TripleAgentControl.resx">
+      <DependentUpon>TripleAgentControl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
