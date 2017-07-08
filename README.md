@@ -13,7 +13,7 @@ You can choose to defined each animation separately and add to the control, or l
 ### Example of animation data
 ```xml  
 <animations>
-    <animation name="Walk" loopcount=""3"">
+    <animation name="Walk" loopcount="3">
         <startframe num="131" />
         <endframe num="139" />
     </animation>
