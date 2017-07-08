@@ -95,6 +95,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "DemoForm";
+            this.ShowIcon = false;
             this.Text = "TripleAgentDemo";
             this.Load += new System.EventHandler(this.DemoForm_Load);
             this.ResumeLayout(false);
