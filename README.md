@@ -31,7 +31,17 @@ Each animation is defined with a name as identifier and childnodes that define t
 
 ### Example of control declaration
 ```C#
+Size spriteSize = new Size(64, 64);
+Point spriteLocation = new Point(0, 0);
+int spriteStartFrame = 131;
 
+agent = new TripleAgentControl(spriteSheet, spriteSize, spriteStartFrame, spriteLocation, animationFrameData);
+Controls.Add(agent);
+```
+
+### Example of how to show an animated tooltip
+```C#
+agent.ShowTip(agent.SpriteAnimations[0], "Sample text");
 ```
 
 ## License
