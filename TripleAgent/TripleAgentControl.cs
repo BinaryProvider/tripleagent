@@ -89,6 +89,14 @@ namespace TripleAgent
         private Sprite _sprite;
         private Queue<int> _spriteAnimationQueue = new Queue<int>();
 
+        /// <summary>
+        /// Initialize a new Triple Agent control.
+        /// </summary>
+        /// <param name="spriteSheet">Spritesheet to be animated.</param>
+        /// <param name="spriteSize">Size of each individual sprite in pixels.</param>
+        /// <param name="spriteStartFrame">Frame in the spritesheet to show initially.</param>
+        /// <param name="spriteStartLocation">Location where to draw the sprite on the canvas initially.</param>
+        /// <param name="animationData">Animation data in XML.</param>
         public TripleAgentControl(Image spriteSheet = null, Size? spriteSize = null, int? spriteStartFrame = null, Point? spriteStartLocation = null, XmlDocument animationData = null)
         {
             if (spriteSheet != null)
@@ -136,6 +144,9 @@ namespace TripleAgent
             }
         }
 
+        /// <summary>
+        /// Hide the current tooltip.
+        /// </summary>
         public void HideTip()
         {
             _canvas.Controls.RemoveByKey("TooltipLabel");
@@ -156,22 +167,22 @@ namespace TripleAgent
         /// <summary>
         /// Start an animation and show a label in a tooltip balloon format.
         /// </summary>
-        /// <param name="animation">The animation that should be played when the tip is shown.</param>
-        /// <param name="labelText">The text to be shown.</param>
-        /// <param name="labelAlignment">Where to place the tooltip label.</param>
-        /// <param name="labelWidth">Desired width of the label.</param>
-        /// <param name="labelMargin">Desired margin around the label.</param>
-        /// <param name="labelPadding">Desired padding within the label.</param>
-        /// <param name="labelBackgroundColor">Desired background color of the label.</param>
-        /// <param name="labelTextColor">Desired text color of the label.</param>
-        /// <param name="labelBorder">If the label should have a border or not.</param>
-        /// <param name="labelFont">Desired font of the label.</param>
-        /// <param name="arrowSize">Desired size of the tooltip arrow.</param>
-        /// <param name="arrowCornerOffsetPercentage">Desired distance of the tooltip arrow from the top or bottom corner of the tooltip label. Specified in percentage of the entire tooltip label height.</param>
-        /// <param name="spriteDelay">Desired delay until the sprite is shown (in milliseconds).</param>
-        /// <param name="labelDelay">Desired delay until the tooltip label is shown (in milliseconds).</param>
-        /// <param name="hideAfter">Desired time until the tooltip label is hidden (in milliseconds). Is persistant if undefined.</param>
-        /// <param name="altSpriteLocation">Desired location of the sprite, if the original sprite location is not desired.</param>
+        /// <param name="animation">Animation that should be played when the tip is shown.</param>
+        /// <param name="labelText">Text to be shown.</param>
+        /// <param name="labelAlignment">Location of tooltip label in relation to the sprite.</param>
+        /// <param name="labelWidth">Width of the label.</param>
+        /// <param name="labelMargin">Margin around the label.</param>
+        /// <param name="labelPadding">Padding within the label.</param>
+        /// <param name="labelBackgroundColor">Background color of the label.</param>
+        /// <param name="labelTextColor">Text color of the label.</param>
+        /// <param name="labelBorder">Border around the label.</param>
+        /// <param name="labelFont">Font of the label.</param>
+        /// <param name="arrowSize">Size of the tooltip arrow.</param>
+        /// <param name="arrowCornerOffsetPercentage">Distance of the tooltip arrow from the top or bottom corner of the tooltip label. Specified in percentage of the entire tooltip label height.</param>
+        /// <param name="spriteDelay">Delay until the sprite is shown (in milliseconds).</param>
+        /// <param name="labelDelay">Delay until the tooltip label is shown (in milliseconds).</param>
+        /// <param name="hideAfter">Time until the tooltip label is hidden (in milliseconds). Is persistant if undefined.</param>
+        /// <param name="altSpriteLocation">Location of the sprite (if the original sprite location is not desired).</param>
         public void ShowTip(SpriteAnimation animation, string labelText, ContentAlignment? labelAlignment = null, int? labelWidth = null, Padding? labelMargin = null, int? labelPadding = null, Color? labelBackgroundColor = null, Color? labelTextColor = null, bool? labelBorder = null, Font labelFont = null, int? arrowSize = null, int? arrowCornerOffsetPercentage = null, int? spriteDelay = null, int? labelDelay = null, int? hideAfter = null, Point? altSpriteLocation = null)
         {
             HideTip();
@@ -507,6 +518,12 @@ namespace TripleAgent
             }
         }
 
+        /// <summary>
+        /// Play one of the sprite's animation.
+        /// </summary>
+        /// <param name="animation">The animation to be played.</param>
+        /// <param name="loopCount">Number of times to loop the animation (-1 is infinitely)</param>
+        /// <param name="loopDelay">Number of milliseconds to wait on the last frame of the animation until the loop continues.</param>
         public void PlayAnimation(SpriteAnimation animation, int? loopCount = null, int? loopDelay = null)
         {
             if (_sprite != null)

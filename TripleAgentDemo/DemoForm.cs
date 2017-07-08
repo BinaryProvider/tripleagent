@@ -29,20 +29,24 @@ namespace TripleAgentDemo
             XmlDocument animationFrames = new XmlDocument();
             animationFrames.LoadXml(@"  
                 <animations>
-                    <animation name=""Push"" loopcount=""-1"" loopdelay=""0"">
-                        <startframe num=""92"" />
-                        <endframe num=""99"" />
+                    <animation name=""Walk"" loopcount=""3"">
+                        <startframe num=""131"" />
+                        <endframe num=""139"" />
                     </animation>
                     <animation name=""Dance"" loopcount=""-1"" loopdelay=""0"">
                         <startframe num=""183"" />
                         <endframe num=""188"" />
+                    </animation>
+                    <animation name=""Shoot"">
+                        <startframe num=""248"" />
+                        <endframe num=""260"" />
                     </animation>
                 </animations>"
             );
 
             Size spriteSize = new Size(64, 64);
             Point spriteLocation = new Point(0, 20);
-            int spriteStartFrame = 183;
+            int spriteStartFrame = 131;
 
             agent = new TripleAgentControl(Properties.Resources.demo_spritesheet, spriteSize, spriteStartFrame, spriteLocation, animationFrames);
 
@@ -55,7 +59,7 @@ namespace TripleAgentDemo
         }
         private void DemoForm_Load(object sender, EventArgs e)
         {
-            agent.ShowTip(agent.SpriteAnimations[1], "Hi! I'm a TripleAgent! Use me to let users know what to do in your application!", ContentAlignment.MiddleRight, labelDelay: 1000);
+            agent.ShowTip(agent.SpriteAnimations[0], "Hi! I'm a TripleAgent! Use me to let users know what to do in your application!", ContentAlignment.MiddleRight, labelDelay: 500);
         }
 
         private void someTextbox_TextChanged(object sender, EventArgs e)
@@ -74,7 +78,7 @@ namespace TripleAgentDemo
 
         private void someButton1_Click(object sender, EventArgs e)
         {
-            agent.ShowTip(agent.SpriteAnimations[1], "Yeah, press that button!", ContentAlignment.MiddleRight);
+            agent.ShowTip(agent.SpriteAnimations[2], "Yeah, press that button!", ContentAlignment.MiddleRight);
         }
     }
 }
