@@ -8,7 +8,7 @@ TripleAgent is an open source help agent control, with the purpose to display an
 
 Any spritesheet can be used, but ensure that each sprite in the sheet is the same size.
 
-You can choose to defined each animation separately and add to the control, or load a XML definition of all available animations when you intialize the control.
+You can choose to define each animation separately and add to the control, or load a XML definition of all available animations when you intialize the control.
 
 ### Example of animation data
 ```xml  
