@@ -35,7 +35,7 @@ Size spriteSize = new Size(64, 64);
 Point spriteLocation = new Point(0, 0);
 int spriteStartFrame = 131;
 
-TripleAgentControl agent = new TripleAgentControl(spriteSheet, spriteSize, spriteStartFrame, spriteLocation, animationFrameData);
+var agent = new TripleAgentControl(spriteSheet, spriteSize, spriteStartFrame, spriteLocation, animationFrameData);
 Controls.Add(agent);
 ```
 
