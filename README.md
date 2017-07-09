@@ -49,5 +49,5 @@ agent.ShowTip(agent.SpriteAnimations[0], "Sample text");
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Acknowledgments
-* [BouncyTarget](https://www.codeproject.com/Articles/1085446/Using-Sprites-Inside-Windows-Forms){:target="_blank"} for the WinForms Sprite Library.
-* [@Gaurav0](https://github.com/gaurav0/Universal-LPC-Spritesheet-Character-Generator){:target="_blank"} for the Universal Spritesheet Generator.
+* [BouncyTarget](https://www.codeproject.com/Articles/1085446/Using-Sprites-Inside-Windows-Forms) for the WinForms Sprite Library.
+* [@Gaurav0](https://github.com/gaurav0/Universal-LPC-Spritesheet-Character-Generator) for the Universal Spritesheet Generator.
